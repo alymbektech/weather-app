@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Weather</title>
+</head>
+<body>
+    <center>
+        <input id="myInput" style="text-align:center;height:100px;width:400px;font-size:14pt;" 
+            name="firstname" placeholder="Huntington,US or zip-code">
+        <br>
+        <button id="myButton" type="submit" onclick="weather()">Submit</button>
+        <p id="data"></p>
+    </center>
+
+    <script>
+        var input = document.getElementById("myInput");
+        input.addEventListener("keyup", function (event) {
+            if (event.keyCode === 13) {
+                event.preventDefault();
+                document.getElementById("myButton").click();
+            }
+        });
+    
+        function weather() {
+            var link = document.getElementById('myInput').value;
+            if (link.includes(",")) {
+                link.replace(/\s+/g, '');
+                var url = "https://api.openweathermap.org/data/2.5/weather?q=" + link.split(",")[0] + "," + link.split(",")[1] + "&appid=d93804b8ddc6237bf55d145f63c03f56";
+            }
+            else if (link.length == 5) {
+                var url = "https://api.openweathermap.org/data/2.5/weather?zip=" + link + ",us&appid=d93804b8ddc6237bf55d145f63c03f56";
+            }
+            else {
+                document.getElementById("data").innerHTML = "Invalid Input";
+            }
+    
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    var json = JSON.parse(this.responseText);
+                    parseJson(json);
+                }
+            };
+            xmlhttp.open("GET", url, true);
+            xmlhttp.send();
+            function parseJson(json) {
+                var k = parseFloat(json["main"]["temp"]);
+                var fah = (k - 273.15) * (9 / 5) + 32;
+                var cel = (k - 273.15);
+                var Value = "The current temperature in " + json["name"] + " is " + fah.toPrecision(2) + "°F / " + cel.toPrecision(2) + "°C";
+                document.getElementById("data").innerHTML = Value;
+            }
+        }
+    
+    </script>
+</body>
+</html>
