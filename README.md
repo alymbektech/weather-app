@@ -1,4 +1,3 @@
-# bitcoin-price-ticker
-Online Bitcoin Price Ticker
+# weather-app
 
-Simple Bitcoin Price Ticker (HTML, CSS, JS)
+Simple Weather App (HTML, CSS, JS)
